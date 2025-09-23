@@ -9,7 +9,7 @@
 import Foundation
 
 //Filme que ficará em foco na tela
-struct FeaturedMovieModel: Decodable {
+struct FeaturedMovieModel: Decodable, @unchecked Sendable {
     let id: Int
     let originalTitle: String
     let posterPath: String?
