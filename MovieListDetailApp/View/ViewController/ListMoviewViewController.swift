@@ -12,15 +12,19 @@ import RxCocoa
 class ListMoviewViewController: UIViewController {
     
     private let listMovieView = ListMovieView()
-    private let similarFilmViewModel = ListMovieViewModel.shared
-    private let featuredMovieViewModel = FeaturedMovieViewModel.shared
+    private let similarFilmViewModel: ListMovieViewModel
+    private let featuredMovieViewModel: FeaturedMovieViewModel
+
     private let disposeBag = DisposeBag()
     private var animatedIndexPaths: Set<IndexPath> = []
     
     private var selectedMovieId: Int = APIConstants.initialMovieId
     
     // MARK: - Initializer
-    init() {
+    init(similarFilmViewModel: ListMovieViewModel = ListMovieViewModel(listMovieService: ListMovieService(), genreService: GenreMovieService()),
+         featuredMovieViewModel: FeaturedMovieViewModel = FeaturedMovieViewModel(featuredMovieService: FeaturedMovieService())) {
+        self.similarFilmViewModel = similarFilmViewModel
+        self.featuredMovieViewModel = featuredMovieViewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -44,7 +48,7 @@ class ListMoviewViewController: UIViewController {
     private func configurePullToRefresh() {
         listMovieView.refreshControl.addTarget(self, action: #selector(handlePullToRefresh), for: .valueChanged)
     }
-
+    
     @objc private func handlePullToRefresh() {
         similarFilmViewModel.fetchMovies(for: selectedMovieId)
         featuredMovieViewModel.fetchFeaturedMovie(for: selectedMovieId)
@@ -122,26 +126,37 @@ class ListMoviewViewController: UIViewController {
     }
     
     private func handleState(_ state: ViewModelState<[MovieModel]>) {
+        listMovieView.loadingIndicator.stopAnimating()
+        listMovieView.refreshControl.endRefreshing()
+        
         switch state {
             case .idle:
-                listMovieView.loadingIndicator.stopAnimating()
+                listMovieView.tableView.isHidden = false
                 listMovieView.errorLabel.isHidden = true
-                listMovieView.refreshControl.endRefreshing()
+                
             case .loading:
                 listMovieView.loadingIndicator.startAnimating()
+                listMovieView.tableView.isHidden = true
                 listMovieView.errorLabel.isHidden = true
+                
             case .success(let movies):
-                listMovieView.loadingIndicator.stopAnimating()
+                listMovieView.tableView.isHidden = false
                 listMovieView.errorLabel.isHidden = true
-                listMovieView.refreshControl.endRefreshing()
                 updateTableView(with: movies)
-            case .failure(let error):
-                listMovieView.loadingIndicator.stopAnimating()
-                listMovieView.errorLabel.text = error.localizedDescription
+                
+            case .failure(let error as NSError):
+                updateTableView(with: [])
+                listMovieView.tableView.isHidden = true
                 listMovieView.errorLabel.isHidden = false
-                listMovieView.refreshControl.endRefreshing()
+                
+                if error.code == NSURLErrorNotConnectedToInternet {
+                    listMovieView.errorLabel.text = "No internet connection"
+                } else {
+                    listMovieView.errorLabel.text = error.localizedDescription
+                }
         }
     }
+
     
     private func updateTableView(with movies: [MovieModel]) {
         listMovieView.tableView.dataSource = nil

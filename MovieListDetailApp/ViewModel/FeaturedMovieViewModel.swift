@@ -66,7 +66,7 @@ class FeaturedMovieViewModel {
         numberFormatter.minimumFractionDigits = 1
         numberFormatter.maximumFractionDigits = 1
         
-        let formattedValue = numberFormatter.string(from: NSNumber(value: roundedValue)) ?? "Valor indefinido"
+        let formattedValue = numberFormatter.string(from: NSNumber(value: roundedValue)) ?? "Undefined"
         
         return formattedValue
     }
