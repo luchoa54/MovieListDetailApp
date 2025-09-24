@@ -122,6 +122,9 @@ MovieListDetailApp/
    cd MovieListDetailApp
    pod install
 
+> **⚠️ Important Notice:**  
+> If you encounter issues installing dependencies due to CocoaPods version conflicts, run `pod deintegrate` to clear any previous configurations before running `pod install`.
+
 3. Open the workspace in Xcode:
    ```bash
    open MovieListDetailApp.xcworkspace
