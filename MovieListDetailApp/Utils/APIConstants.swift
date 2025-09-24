@@ -11,7 +11,7 @@ import Foundation
 class APIConstants {
     
     static let acceptType = "application/json"
-    static let initialMovieId = 1311031
+    static let initialMovieId = 617126
     
     /*
      NOTE: For this test project, the API token is intentionally left as a placeholder.
@@ -22,7 +22,7 @@ class APIConstants {
      3. Allow the reviewer to use their own personal TMDB token to run the project.
      */
     static var authorization: String {
-        return "Bearer YOUR_API_TOKEN_HERE" // Replace with your personal TMDB token
+        return "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhN2ZmYjM1NzMzMTFkOTA2ZGRhYjkxMmFlNTM4NTNiNyIsIm5iZiI6MTczNzIyOTIyNi41OTcsInN1YiI6IjY3OGMwM2FhMmU0MTYzNGU1MjY0ZjVjNSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.b3jyWhbv-aXMMofWnoAP7XMdy734AnXPqQNSWbFYUmE" // Replace with your personal TMDB token
     }
     
     static let language = "en-US"
