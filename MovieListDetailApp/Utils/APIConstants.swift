@@ -22,7 +22,7 @@ class APIConstants {
      3. Allow the reviewer to use their own personal TMDB token to run the project.
      */
     static var authorization: String {
-        return "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhN2ZmYjM1NzMzMTFkOTA2ZGRhYjkxMmFlNTM4NTNiNyIsIm5iZiI6MTczNzIyOTIyNi41OTcsInN1YiI6IjY3OGMwM2FhMmU0MTYzNGU1MjY0ZjVjNSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.b3jyWhbv-aXMMofWnoAP7XMdy734AnXPqQNSWbFYUmE" // Replace with your personal TMDB token
+        return "Bearer YOUR_API_KEY" // Replace with your personal TMDB token
     }
     
     static let language = "en-US"
