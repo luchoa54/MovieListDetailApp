@@ -49,6 +49,7 @@ class MovieDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Colors.backgroundColor
+        view.accessibilityIdentifier = "MovieDetailView"
         setupLayout()
         configureUI()
     }
@@ -146,6 +147,7 @@ class MovieDetailViewController: UIViewController {
         overviewLabel.font = .systemFont(ofSize: 16)
         overviewLabel.textColor = Colors.textColor
         overviewLabel.text = viewModel.overview
+        overviewLabel.accessibilityIdentifier = "overviewLabelIdentifier"
         
         if let url = viewModel.posterURL() {
             downloadImage(from: url)

@@ -37,8 +37,17 @@ class ListMoviewViewController: UIViewController {
         super.viewDidLoad()
         bindSimilarViewModel()
         configureTableHeaderView()
-        
+        configurePullToRefresh()
         fetchMovieData()
+    }
+    
+    private func configurePullToRefresh() {
+        listMovieView.refreshControl.addTarget(self, action: #selector(handlePullToRefresh), for: .valueChanged)
+    }
+
+    @objc private func handlePullToRefresh() {
+        similarFilmViewModel.fetchMovies(for: selectedMovieId)
+        featuredMovieViewModel.fetchFeaturedMovie(for: selectedMovieId)
     }
     
     private func fetchMovieData() {
@@ -117,17 +126,20 @@ class ListMoviewViewController: UIViewController {
             case .idle:
                 listMovieView.loadingIndicator.stopAnimating()
                 listMovieView.errorLabel.isHidden = true
+                listMovieView.refreshControl.endRefreshing()
             case .loading:
                 listMovieView.loadingIndicator.startAnimating()
                 listMovieView.errorLabel.isHidden = true
             case .success(let movies):
                 listMovieView.loadingIndicator.stopAnimating()
                 listMovieView.errorLabel.isHidden = true
+                listMovieView.refreshControl.endRefreshing()
                 updateTableView(with: movies)
             case .failure(let error):
                 listMovieView.loadingIndicator.stopAnimating()
                 listMovieView.errorLabel.text = error.localizedDescription
                 listMovieView.errorLabel.isHidden = false
+                listMovieView.refreshControl.endRefreshing()
         }
     }
     

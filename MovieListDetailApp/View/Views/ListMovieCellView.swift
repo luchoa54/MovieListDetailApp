@@ -110,6 +110,7 @@ class ListMovieCellView: UITableViewCell {
     // MARK: - Configure Cell
     func configure(with movie: MovieModel) {
         titleLabel.text = movie.originalTitle
+        titleLabel.accessibilityIdentifier = "movieTitle_\(movie.id)"
         
         if let releaseDate = movie.releaseDate {
             releaseYearLabel.text = extractYear(from: releaseDate)

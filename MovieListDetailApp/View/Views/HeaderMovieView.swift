@@ -91,10 +91,10 @@ class HeaderMovieView: UIView, ViewCode {
         return view
     }()
     
-    private var imageViewHeight = NSLayoutConstraint()
-    private var imageViewBottom = NSLayoutConstraint()
+    var imageViewHeight = NSLayoutConstraint()
+    var imageViewBottom = NSLayoutConstraint()
     private var containerView = UIView()
-    private var containerViewHeight = NSLayoutConstraint()
+    var containerViewHeight = NSLayoutConstraint()
     var isLiked = false
     
     override init(frame: CGRect) {
@@ -196,11 +196,13 @@ class HeaderMovieView: UIView, ViewCode {
     }
     
     public func scrollViewDidScroll(scrollView: UIScrollView) {
-        containerViewHeight.constant = scrollView.contentInset.top
-        let offsetY = -(scrollView.contentOffset.y + scrollView.contentInset.top)
-        containerView.clipsToBounds = offsetY <= 0
-        imageViewBottom.constant = offsetY >= 0 ? 0 : -offsetY / 2
-        imageViewHeight.constant = max(offsetY + scrollView.contentInset.top, scrollView.contentInset.top)
+        let offsetY = scrollView.contentOffset.y
+        if offsetY < 0 {
+            imageViewHeight.constant = containerViewHeight.constant - offsetY
+            imageViewBottom.constant = 0
+        } else {
+            imageViewBottom.constant = -offsetY / 2
+        }
     }
     
     @objc private func likeButtonTapped() {
